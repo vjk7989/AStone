@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website with Search Bar and Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            text-align: center;
+        }
+        .search-bar {
+            position: relative;
+            display: inline-block;
+        }
+        .search-input {
+            width: 400px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+            font-size: 16px;
+            transition: width 0.4s ease-in-out;
+        }
+        .search-input:focus {
+            width: 500px;
+        }
+        .options-list {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        .option {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #f2f2f2;
+        }
+        .search-button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search..." autocomplete="off">
+            <div class="options-list" id="optionsList">
+                <div class="option">vtop</div>
+                <div class="option">Option 2</div>
+                <div class="option">Option 3</div>
+                <div class="option">Option 4</div>
+                <div class="option">Option 5</div>
+                <div class="option">Option 6</div>
+                <div class="option">Option 7</div>
+                <div class="option">Option 8</div>
+            </div>
+        </div>
+        <button id="searchButton" class="search-button" disabled>Search</button>
+        <main>
+            <!-- Sections will be loaded here -->
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById('searchInput');
+            const optionsList = document.getElementById('optionsList');
+            const options = document.querySelectorAll('.option');
+            const searchButton = document.getElementById('searchButton');
+
+            // Show options when typing in the search bar
+            searchInput.addEventListener('input', function() {
+                const searchText = this.value.toLowerCase();
+                optionsList.style.display = searchText ? 'block' : 'none';
+
+                options.forEach(option => {
+                    const text = option.innerText.toLowerCase();
+                    if (text.indexOf(searchText) !== -1) {
+                        option.style.display = 'block';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+
+                // Enable search button if search input is not empty
+                searchButton.disabled = searchText === '';
+            });
+
+            // Select option and enable search button when clicked
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    searchInput.value = this.innerText;
+                    optionsList.style.display = 'none';
+                    searchButton.disabled = false;
+                });
+            });
+
+            // Redirect to selected option's link when search button is clicked
+            searchButton.addEventListener('click', function() {
+                const selectedOptionText = searchInput.value;
+                const website = getWebsiteForOption(selectedOptionText);
+                if (website) {
+                    window.open(website, '_blank');
+                }
+            });
+
+            // Function to return the website URL for the selected option
+            function getWebsiteForOption(optionText) {
+                switch (optionText) {
+                    case 'vtop':
+                        return 'https://vtop.vitap.ac.in/vtop/open/page';
+                    case 'Option 2':
+                        return 'https://example.com/option2';
+                    case 'Option 3':
+                        return 'https://example.com/option3';
+                    // Add more cases for other options if needed
+                    default:
+                        return null;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
